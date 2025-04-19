@@ -8,7 +8,7 @@ public class testScript : MonoBehaviour
     float moveSpeed = 15;
     [SerializeField] LayerMask groundLayer;
     Animator animator;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
 
     float jumpForce = 3500f;
 
@@ -25,6 +25,11 @@ public class testScript : MonoBehaviour
     float coyoteCurrentTime = 0f;
     float coyoteTime = 0.2f;
 
+    //keeps track of how many controllable blocks are nearby
+    int nearbyBlocks = 0;
+    //if canMove is false, the player can't move, used for entering the object manipulation phase.
+    bool canMove = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,28 +40,44 @@ public class testScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var horizontal = Input.GetAxis("Horizontal");
-
-        rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
-
-        //throw a sphere cast and see if the player is colliding with the ground
-        //THESE ARE HARD-CODED VALUES, IF THE PLAYER SIZE CHANGES THESE SHOULD CHANGE!
-        if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.5f, -transform.up, 0.25f, groundLayer))
-        {
-            coyoteCurrentTime = coyoteTime;
-        }
-
         input();
         timers();
     }
 
     void input()
     {
-        //if the player presses "jump"
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        if (canMove)
         {
-            jumpQueueCurrentTime = jumpQueueTime;
-            //jumping is handled under "CoyoteCurrentTime" in the "timers" function
+            var horizontal = Input.GetAxis("Horizontal");
+
+            rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
+
+            //throw a sphere cast and see if the player is colliding with the ground
+            //THESE ARE HARD-CODED VALUES, IF THE PLAYER SIZE CHANGES THESE SHOULD CHANGE!
+            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.5f, -transform.up, 0.25f, groundLayer))
+            {
+                coyoteCurrentTime = coyoteTime;
+            }
+
+            //if the player presses "jump"
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                jumpQueueCurrentTime = jumpQueueTime;
+                //jumping is handled under "CoyoteCurrentTime" in the "timers" function
+            }
+
+            //the button to manipulate objects
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (nearbyBlocks > 0)
+                {
+                    StartCoroutine(manipulationPhase(0.2f));
+                }
+            }
+        }
+        else
+        {
+            rb.velocity /= 1.3f;
         }
     }
 
@@ -84,5 +105,38 @@ public class testScript : MonoBehaviour
             }
             coyoteCurrentTime = Mathf.Max(0, coyoteCurrentTime - Time.deltaTime);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Block otherScript = other.gameObject.GetComponent<Block>();
+        //if the collided object is a "Block" object, it can be manipulated
+        if (otherScript != null)
+        {
+            otherScript.nearPlayer = true;
+            nearbyBlocks += 1;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        Block otherScript = other.gameObject.GetComponent<Block>();
+        //if the collided object is a "Block" object, it can't be manipulated anymore (got far)
+        if (otherScript != null)
+        {
+            otherScript.nearPlayer = false;
+            nearbyBlocks -= 1;
+        }
+
+    }
+
+
+    IEnumerator manipulationPhase(float seconds)
+    {
+        canMove = false;
+        //play some animation here before yield
+
+        yield return new WaitForSeconds(seconds);
+        GameObject.Destroy(gameObject);
     }
 }
