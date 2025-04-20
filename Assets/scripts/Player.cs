@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class testScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
+    //DON'T USE [SERIALIZEFIELD], THE PLAYER GETS DELETED AND REINITIALIZED!
+
     float moveSpeed = 15;
+
+    //this should be fixed later
     [SerializeField] LayerMask groundLayer;
     Animator animator;
     public Rigidbody2D rb;
@@ -115,6 +120,12 @@ public class testScript : MonoBehaviour
         {
             otherScript.nearPlayer = true;
             nearbyBlocks += 1;
+        }
+
+        if (other.gameObject.tag == "Coin")
+        {
+            GameObject.Find("WinText").GetComponent<TMP_Text>().text = "You won the prototype!";
+            GameObject.Destroy(other.gameObject);
         }
     }
 
