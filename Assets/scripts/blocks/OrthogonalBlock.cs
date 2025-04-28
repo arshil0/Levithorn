@@ -26,22 +26,22 @@ public class OrthogonalBlock : Block
         //player is currently controlling this block
         if (beingControlled && canMove)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.right;
             }
-            else if (Input.GetKeyDown(KeyCode.W))
+            else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.up;
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.left;
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.down;
