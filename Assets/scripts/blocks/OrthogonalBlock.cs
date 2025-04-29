@@ -68,7 +68,6 @@ public class OrthogonalBlock : Block
                 sprite.color = Color.red;
             }
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D other)

@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     float moveSpeed = 15f;
 
     // this should be fixed later
-    [SerializeField] LayerMask groundLayer;
+    LayerMask groundLayer;
     Animator animator;
     public Rigidbody2D rb;
 
@@ -39,6 +39,10 @@ public class Player : MonoBehaviour
     // start is called before the first frame update
     void Start()
     {
+        //setup the ground layer (This was how the Unity api used it)
+        groundLayer = LayerMask.GetMask("Ground");
+
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -73,7 +77,7 @@ public class Player : MonoBehaviour
             }
 
             // throw a sphere cast and see if the player is colliding with the ground
-            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.5f, -transform.up, 0.25f, groundLayer))
+            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, -transform.up, 0.25f, groundLayer))
             {
                 coyoteCurrentTime = coyoteTime;
             }
@@ -93,17 +97,14 @@ public class Player : MonoBehaviour
                 }
             }
 
-            //I commented this for now until we can use the sprites :)
-
             // set "isRunning" based on horizontal movement
-            //animator.SetBool("isRunning", Mathf.Abs(horizontal) > 0.1f);
+            animator.SetBool("isRunning", Mathf.Abs(horizontal) > 0.1f);
 
             // set "isIdle" parameter if the player is not moving and not jumping
-            /*
             if (Mathf.Abs(horizontal) < 0.1f && coyoteCurrentTime <= 0)
             {
                 animator.SetBool("isRunning", false);
-            }*/
+            }
         }
         else
         {
