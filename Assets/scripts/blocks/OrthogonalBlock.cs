@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class OrthogonalBlock : Block
 {
-    float acceleration = 1000f;
+    float acceleration = 1500f;
     float velocity = 0f;
-    float maxSpeed = 1500f;
+    float maxSpeed = 2000f;
 
     //this is the maximum magnitude of the rigidbody velocity that this block can move
     float maxRBSpeed = 12;
