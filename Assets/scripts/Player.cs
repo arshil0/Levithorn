@@ -7,14 +7,14 @@ public class Player : MonoBehaviour
 {
     // DON'T USE [SERIALIZEFIELD], THE PLAYER GETS DELETED AND REINITIALIZED!
 
-    float moveSpeed = 15f;
+    float moveSpeed = 11f;
 
     // this should be fixed later
     LayerMask groundLayer;
     Animator animator;
     public Rigidbody2D rb;
 
-    float jumpForce = 3500f;
+    float jumpForce = 3000f;
 
     // set up a jump queue timer (when the player presses jump in the air, queue that jump command for a short period of time, for better player experience)
     // if the current time for jump queue is 0, that means that there is no jump command queued
@@ -30,8 +30,11 @@ public class Player : MonoBehaviour
 
     // keeps track of how many controllable blocks are nearby
     int nearbyBlocks = 0;
-    // if canMove is false, the player can't move, used for entering the object manipulation phase.
+    // if canMove is false, the player can't move, used for entering the object manipulation phase and transitioning stages.
     bool canMove = true;
+
+    //how long the player stops when transitioning between stages, it's a bit less than the actual transition time so it feels better for the player
+    float transitionStopTime = 1f;
 
     // store the initial scale of the player (I scaled up the player and its size gets changed on play mode)
     private Vector3 initialScale;
@@ -156,7 +159,14 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "TransitionPoint")
         {
-            other.gameObject.GetComponent<TransitionPoint>().WarpToLevel();
+
+            //try to see if the camera will change, if so, stop player movement for some time
+            if (other.gameObject.GetComponent<TransitionPoint>().WarpToLevel())
+            {
+                StartCoroutine(StopMovement(transitionStopTime));
+            }
+
+
         }
     }
 
@@ -178,5 +188,15 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(seconds);
         GameObject.Destroy(gameObject);
+    }
+
+    //stop player movement for some time
+    IEnumerator StopMovement(float seconds)
+    {
+        print("STOP");
+        canMove = false;
+        yield return new WaitForSeconds(seconds);
+        print("MOVE");
+        canMove = true;
     }
 }
