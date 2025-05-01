@@ -151,8 +151,12 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Coin")
         {
-            GameObject.Find("WinText").GetComponent<TMP_Text>().text = "You won the prototype!";
             GameObject.Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "TransitionPoint")
+        {
+            other.gameObject.GetComponent<TransitionPoint>().WarpToLevel();
         }
     }
 
