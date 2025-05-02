@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -91,7 +91,238 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 0
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7326ac9a7403e9248ba2675a212147ec
+      internalID: -1883764538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_1
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 2
+        width: 23
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a1e1414295964845b32d92fd51f9e99
+      internalID: -248290654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_2
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 1
+        width: 26
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 109f8c95d28a85844b3759a5b9dbe393
+      internalID: 1537581855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 0
+        width: 29
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38dd088b25fbce24398b94887be67c75
+      internalID: 411243725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50c78fa04da0da140a8a0b443768a12f
+      internalID: 1471378062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_5
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 0
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c21c731d6e98654599b4df7ba2f98c2
+      internalID: 1549677121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_6
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 1
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca31c14c1c043c442bcd923223e132d9
+      internalID: -405974563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_7
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 7
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d366d0f145abfdf4d9ec589a1249c13e
+      internalID: -514101051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_8
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 0
+        width: 14
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3a61f753ed526242bb6622a6fe15275
+      internalID: 1665314017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_9
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 4
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57abe894a03b99746a3ee7c6abec7810
+      internalID: 255073663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dude_Monster_Death_8_10
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 0
+        width: 54
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d92f3749c4c6f8443b7067b43f6fe952
+      internalID: -592877719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -102,7 +333,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dude_Monster_Death_8_0: -1883764538
+      Dude_Monster_Death_8_1: -248290654
+      Dude_Monster_Death_8_10: -592877719
+      Dude_Monster_Death_8_2: 1537581855
+      Dude_Monster_Death_8_3: 411243725
+      Dude_Monster_Death_8_4: 1471378062
+      Dude_Monster_Death_8_5: 1549677121
+      Dude_Monster_Death_8_6: -405974563
+      Dude_Monster_Death_8_7: -514101051
+      Dude_Monster_Death_8_8: 1665314017
+      Dude_Monster_Death_8_9: 255073663
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

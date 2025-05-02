@@ -136,7 +136,8 @@ public class Player : MonoBehaviour
                 coyoteCurrentTime = 0f;
 
                 // trigger the Jump animation
-                animator.SetTrigger("Jump");
+
+                animator.SetTrigger("isJumping");
             }
             coyoteCurrentTime = Mathf.Max(0, coyoteCurrentTime - Time.deltaTime);
         }
@@ -183,10 +184,13 @@ public class Player : MonoBehaviour
 
     IEnumerator manipulationPhase(float seconds)
     {
-        canMove = false;
-        // play some animation here before yield
+        transform.localScale = initialScale;
+        animator.SetTrigger("DisappearTrigger");
 
-        yield return new WaitForSeconds(seconds);
+        // wait for the animation to finish 
+        yield return new WaitForSeconds(0.5f);
+
+        // Nnw destroy the player 
         GameObject.Destroy(gameObject);
     }
 
