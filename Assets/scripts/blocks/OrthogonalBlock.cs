@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class OrthogonalBlock : Block
 {
@@ -11,12 +12,18 @@ public class OrthogonalBlock : Block
     //this is the maximum magnitude of the rigidbody velocity that this block can move
     float maxRBSpeed = 12;
 
+    bool moving = false;
+
     public Vector2 direction = Vector2.down;
 
     SpriteRenderer sprite;
 
     [SerializeField] GameObject directionLight;
     SpriteRenderer directionLightSprite;
+
+    [SerializeField] AudioSource gravityChangeSound;
+    [SerializeField] AudioSource impactSound;
+    [SerializeField] AudioSource windSound;
 
     // Start is called before the first frame update
     void Start()
@@ -37,31 +44,41 @@ public class OrthogonalBlock : Block
         //player is currently controlling this block
         if (beingControlled && canMove)
         {
+            bool moved = false;
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.right;
-                setLightDirection(direction);
+                moved = true;
             }
             else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.up;
-                setLightDirection(direction);
+                moved = true;
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.left;
-                setLightDirection(direction);
+                moved = true;
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 velocity = 0.5f;
                 direction = Vector2.down;
-                setLightDirection(direction);
+                moved = true;
             }
 
+
+            if (moved)
+            {
+                setLightDirection(direction);
+                gravityChangeSound.pitch = Random.Range(0.4f, 1.2f);
+                gravityChangeSound.Play();
+                moving = true;
+                windSound.Play();
+            }
 
         }
 
@@ -100,7 +117,30 @@ public class OrthogonalBlock : Block
                 if (velocity > maxSpeed / 5f)
                 {
                     directionLightSprite.color = Color.blue;
+
+                    //this is when the ground was hit
+                    if (moving)
+                    {
+                        float impactStrength = velocity / maxSpeed - 0.3f;
+                        impactSound.volume = Mathf.Max(0, impactStrength);
+                        windSound.Stop();
+                        impactSound.Play();
+                        moving = false;
+
+
+                        //A pretty long line of code but here we go:
+                        //first we get the main camera
+                        //then we get the "Cinemachine brain"
+                        //from that we get the active virtual camera
+                        //finally, we have to transfer that to a "CinemachineVirtualCameraBase" object, as the original "ICinemaChine" object doesn't have a "transform"
+                        var cam = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera as CinemachineVirtualCameraBase;
+
+                        //start a screen shake
+                        StartCoroutine(screenShake(cam, impactStrength / 6));
+                    }
                 }
+
+
             }
             //if the block is moving around, you can't change its gravity
             else
@@ -121,7 +161,6 @@ public class OrthogonalBlock : Block
         //hit a ground
         else
         {
-            //I may remove this, it's unnecessary for now
             canMove = true;
         }
     }
@@ -168,5 +207,27 @@ public class OrthogonalBlock : Block
                 270
             );
         }
+    }
+
+    //honestly found this from a youtube video, not exactly sure why a regular function didn't work but an IEnumerator works
+    IEnumerator screenShake(CinemachineVirtualCameraBase cam, float effectSeconds)
+    {
+        Vector3 originalCamPosition = cam.transform.position;
+
+        //start from deltatime instead of 0, as the first frame shake seems pretty strong
+        float timer = Time.deltaTime;
+
+        while (timer < effectSeconds)
+        {
+            timer += Time.deltaTime;
+            float shakeStrength = timer / effectSeconds;
+            cam.transform.position = new Vector3(
+                    originalCamPosition.x + Random.Range(-(1 - shakeStrength) / 8, (1 - shakeStrength) / 8),
+                    originalCamPosition.y + Random.Range(-(1 - shakeStrength) / 8, (1 - shakeStrength) / 8),
+                    originalCamPosition.z);
+            yield return null;
+        }
+
+        cam.transform.position = originalCamPosition;
     }
 }
