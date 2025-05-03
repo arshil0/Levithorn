@@ -18,7 +18,6 @@ public class TransitionPoint : MonoBehaviour
 
         //check to see if we are actually going to transition to a new level, or if nothing is happening
         bool transitioning = false;
-        print(camera.m_Priority);
         if (camera.m_Priority != mainCameraFocusLevel)
         {
             transitioning = true;

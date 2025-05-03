@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
 
     float jumpForce = 3000f;
 
+    SpriteRenderer sprite;
+
     // set up a jump queue timer (when the player presses jump in the air, queue that jump command for a short period of time, for better player experience)
     // if the current time for jump queue is 0, that means that there is no jump command queued
     float jumpQueueCurrentTime = 0f;
@@ -42,12 +44,15 @@ public class Player : MonoBehaviour
     AudioSource walkingSound;
     AudioSource jumpSound;
 
+    GameObject eButtonDisplay;
+
     // start is called before the first frame update
     void Start()
     {
         //setup the ground layer (This was how the Unity api used it)
         groundLayer = LayerMask.GetMask("Ground");
 
+        sprite = GetComponent<SpriteRenderer>();
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -59,6 +64,9 @@ public class Player : MonoBehaviour
         walkingSound.volume = 0f;
 
         jumpSound = transform.Find("jumpSound").GetComponent<AudioSource>();
+
+        eButtonDisplay = transform.Find("Canvas/EButtonDisplay").gameObject;
+        eButtonDisplay.SetActive(false);
     }
 
     // update is called once per frame
@@ -80,11 +88,11 @@ public class Player : MonoBehaviour
             // flip the sprite based on movement direction
             if (horizontal > 0) // moving right
             {
-                transform.localScale = new Vector3(initialScale.x, initialScale.y, initialScale.z); // keep original scale and normal facing direction
+                sprite.flipX = false;
             }
             else if (horizontal < 0) // moving left
             {
-                transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z); // flip only x axis, keep original scale for y and z
+                sprite.flipX = true;
             }
 
             // throw a sphere cast and see if the player is colliding with the ground
@@ -114,7 +122,7 @@ public class Player : MonoBehaviour
             //play a walking sound if the player is walking
             if (Mathf.Abs(rb.velocity.y) < 0.1f)
             {
-                if (Mathf.Abs(horizontal) > 0.1f && rb.velocity.magnitude > 0.1f)
+                if (Mathf.Abs(horizontal) > 0.1f)
                 {
                     if (!walkingSound.isPlaying)
                     {
@@ -178,7 +186,7 @@ public class Player : MonoBehaviour
 
                 //randomize jump sound properties and then play it
                 jumpSound.pitch = Random.Range(0.92f, 1.4f);
-                jumpSound.volume = Random.Range(0.8f, 1f);
+                jumpSound.volume = Random.Range(0.45f, 0.75f);
                 jumpSound.Play();
 
                 // trigger the Jump animation
@@ -197,6 +205,7 @@ public class Player : MonoBehaviour
         {
             otherScript.nearPlayer = true;
             nearbyBlocks += 1;
+            eButtonDisplay.SetActive(true);
         }
 
         if (other.gameObject.tag == "Coin")
@@ -225,13 +234,21 @@ public class Player : MonoBehaviour
         {
             otherScript.nearPlayer = false;
             nearbyBlocks -= 1;
+
+            if (nearbyBlocks <= 0)
+            {
+                eButtonDisplay.SetActive(false);
+            }
         }
     }
 
+    //this is when the player is about to manipulate some object(s)
     IEnumerator manipulationPhase(float seconds)
     {
+        canMove = false;
         transform.localScale = initialScale;
         animator.SetTrigger("DisappearTrigger");
+        eButtonDisplay.SetActive(false);
 
         // wait for the animation to finish 
         yield return new WaitForSeconds(0.5f);

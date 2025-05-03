@@ -23,12 +23,16 @@ public class Block : MonoBehaviour
 
     AudioSource manipulationSound;
 
+    public GameObject qButtonDisplay;
+
     // start is called before the first frame update
     public void Start()
     {
         beingControlled = false;
 
         manipulationSound = transform.Find("manipulationSound").GetComponent<AudioSource>();
+        qButtonDisplay = transform.Find("Canvas/QButtonDisplay").gameObject;
+        qButtonDisplay.SetActive(false);
     }
 
     public void input()
@@ -46,6 +50,7 @@ public class Block : MonoBehaviour
             player.transform.position = exitPosition;
 
             beingControlled = false;
+            qButtonDisplay.SetActive(false);
         }
 
         // player is nearby and E is pressed, now the block is being controlled
@@ -55,6 +60,7 @@ public class Block : MonoBehaviour
 
             manipulationSound.pitch = Random.Range(0.9f, 1.55f);
             manipulationSound.Play();
+            qButtonDisplay.SetActive(true);
         }
 
 

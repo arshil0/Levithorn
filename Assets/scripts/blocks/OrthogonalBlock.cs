@@ -40,8 +40,10 @@ public class OrthogonalBlock : Block
     void Update()
     {
 
-        //call the parent input function (E to enter and Q to leave)
-        input();
+        //call the parent input function (E to enter and Q to leave), ONLY IF the block is not moving
+        if (!moving)
+            input();
+
         //player is currently controlling this block
         if (beingControlled && canMove)
         {
@@ -75,11 +77,17 @@ public class OrthogonalBlock : Block
             if (moved)
             {
                 setLightDirection(direction);
+                moving = true;
+
                 gravityChangeSound.pitch = Random.Range(0.4f, 1.2f);
                 gravityChangeSound.Play();
-                moving = true;
+
                 windSound.pitch = Random.Range(0.75f, 1.15f);
                 windSound.Play();
+
+                //hide the Q button indicator to leave the block
+                base.qButtonDisplay.SetActive(false);
+                canMove = false;
             }
 
         }
@@ -113,8 +121,6 @@ public class OrthogonalBlock : Block
             //if the block is not moving, or moving very slightly, you are allowed to change its gravity
             if (rb.velocity.magnitude < 0.5f)
             {
-                canMove = true;
-
                 //I don't know honestly, just slapped some numbers until it worked, so the color doesn't reset to blue as soon as gravity is changed.
                 if (velocity > maxSpeed / 5f)
                 {
@@ -123,7 +129,7 @@ public class OrthogonalBlock : Block
                     else
                         directionLightSprite.color = Color.white;
 
-                    //this is when the ground was hit
+                    //this is when the ground was hit (so it's called once)
                     if (moving)
                     {
                         float impactStrength = velocity / maxSpeed - 0.25f;
@@ -131,6 +137,10 @@ public class OrthogonalBlock : Block
                         windSound.Stop();
                         impactSound.Play();
                         moving = false;
+                        canMove = true;
+
+                        //reveal the Q button display to leave the block
+                        base.qButtonDisplay.SetActive(true);
 
 
                         //A pretty long line of code but here we go:
@@ -160,7 +170,7 @@ public class OrthogonalBlock : Block
         //whatever collided, is not a gound object (3 is the ground layer)
         if (other.gameObject.layer != 3)
         {
-            print(rb.velocity);
+
         }
 
         //hit a ground
