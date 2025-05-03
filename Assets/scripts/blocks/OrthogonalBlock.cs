@@ -118,13 +118,16 @@ public class OrthogonalBlock : Block
                 //I don't know honestly, just slapped some numbers until it worked, so the color doesn't reset to blue as soon as gravity is changed.
                 if (velocity > maxSpeed / 5f)
                 {
-                    directionLightSprite.color = Color.blue;
+                    if (beingControlled)
+                        directionLightSprite.color = new Color(0.04f, 0.9f, 1);
+                    else
+                        directionLightSprite.color = Color.white;
 
                     //this is when the ground was hit
                     if (moving)
                     {
-                        float impactStrength = velocity / maxSpeed - 0.3f;
-                        impactSound.volume = Mathf.Max(0, impactStrength);
+                        float impactStrength = velocity / maxSpeed - 0.25f;
+                        impactSound.volume = Mathf.Max(0, impactStrength / 2.5f);
                         windSound.Stop();
                         impactSound.Play();
                         moving = false;
@@ -172,7 +175,7 @@ public class OrthogonalBlock : Block
     //ALSO, adjust the color of the light to be red with alpha 0
     private void setLightDirection(Vector2 dir)
     {
-        directionLightSprite.color = new Color(1f, 0f, 0f, 0f);
+        directionLightSprite.color = new Color(0.8f, 0f, 0f, 0f);
         if (dir == Vector2.down)
         {
             directionLight.transform.eulerAngles = new Vector3(
