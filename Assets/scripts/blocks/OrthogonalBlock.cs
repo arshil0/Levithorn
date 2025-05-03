@@ -28,6 +28,7 @@ public class OrthogonalBlock : Block
     // Start is called before the first frame update
     void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         directionLightSprite = directionLight.GetComponent<SpriteRenderer>();
@@ -77,6 +78,7 @@ public class OrthogonalBlock : Block
                 gravityChangeSound.pitch = Random.Range(0.4f, 1.2f);
                 gravityChangeSound.Play();
                 moving = true;
+                windSound.pitch = Random.Range(0.75f, 1.15f);
                 windSound.Play();
             }
 

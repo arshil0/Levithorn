@@ -21,10 +21,14 @@ public class Block : MonoBehaviour
     // track where the player should be when they leave the block
     private Vector2 exitPosition;
 
+    AudioSource manipulationSound;
+
     // start is called before the first frame update
-    void Start()
+    public void Start()
     {
         beingControlled = false;
+
+        manipulationSound = transform.Find("manipulationSound").GetComponent<AudioSource>();
     }
 
     public void input()
@@ -49,12 +53,13 @@ public class Block : MonoBehaviour
         {
             beingControlled = true;
 
-           
+            manipulationSound.pitch = Random.Range(0.9f, 1.55f);
+            manipulationSound.Play();
         }
 
 
     }
 
-   
+
 
 }

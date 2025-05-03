@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
     // store the initial scale of the player (I scaled up the player and its size gets changed on play mode)
     private Vector3 initialScale;
 
+    AudioSource walkingSound;
+    AudioSource jumpSound;
+
     // start is called before the first frame update
     void Start()
     {
@@ -51,6 +54,11 @@ public class Player : MonoBehaviour
 
         // store the initial scale of the player
         initialScale = transform.localScale;
+
+        walkingSound = transform.Find("walkingSound").GetComponent<AudioSource>();
+        walkingSound.volume = 0f;
+
+        jumpSound = transform.Find("jumpSound").GetComponent<AudioSource>();
     }
 
     // update is called once per frame
@@ -96,12 +104,45 @@ public class Player : MonoBehaviour
             {
                 if (nearbyBlocks > 0)
                 {
-                    StartCoroutine(manipulationPhase(0.2f));
+                    StartCoroutine(manipulationPhase(0.25f));
                 }
             }
 
             // set "isRunning" based on horizontal movement
             animator.SetBool("isRunning", Mathf.Abs(horizontal) > 0.1f);
+
+            //play a walking sound if the player is walking
+            if (Mathf.Abs(rb.velocity.y) < 0.1f)
+            {
+                if (Mathf.Abs(horizontal) > 0.1f && rb.velocity.magnitude > 0.1f)
+                {
+                    if (!walkingSound.isPlaying)
+                    {
+                        walkingSound.Play();
+                    }
+                    if (walkingSound.volume < 1)
+                    {
+                        walkingSound.volume = Mathf.Min(1, walkingSound.volume + Time.deltaTime * 4);
+                    }
+                }
+                else
+                {
+                    //fade the walking sound out, instead of instantly stopping it, so it feels more natural
+                    if (walkingSound.volume > 0)
+                    {
+                        walkingSound.volume = Mathf.Max(0, walkingSound.volume - Time.deltaTime * 4);
+                    }
+                }
+            }
+            else
+            {
+                //fade the walking sound out, instead of instantly stopping it, so it feels more natural
+                if (walkingSound.volume > 0)
+                {
+                    walkingSound.volume = Mathf.Max(0, walkingSound.volume - Time.deltaTime * 4);
+                }
+            }
+
 
             // set "isIdle" parameter if the player is not moving and not jumping
             if (Mathf.Abs(horizontal) < 0.1f && coyoteCurrentTime <= 0)
@@ -134,6 +175,11 @@ public class Player : MonoBehaviour
                 rb.AddForce(new Vector2(0f, jumpForce));
                 jumpQueueCurrentTime = 0f;
                 coyoteCurrentTime = 0f;
+
+                //randomize jump sound properties and then play it
+                jumpSound.pitch = Random.Range(0.92f, 1.4f);
+                jumpSound.volume = Random.Range(0.8f, 1f);
+                jumpSound.Play();
 
                 // trigger the Jump animation
 
@@ -190,17 +236,17 @@ public class Player : MonoBehaviour
         // wait for the animation to finish 
         yield return new WaitForSeconds(0.5f);
 
-        // Nnw destroy the player 
+        // Now destroy the player 
         GameObject.Destroy(gameObject);
     }
 
     //stop player movement for some time
     IEnumerator StopMovement(float seconds)
     {
-        print("STOP");
         canMove = false;
+        rb.velocity = new Vector2(0f, 0f);
+        walkingSound.Stop();
         yield return new WaitForSeconds(seconds);
-        print("MOVE");
         canMove = true;
     }
 }
