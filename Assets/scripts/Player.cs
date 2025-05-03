@@ -46,6 +46,13 @@ public class Player : MonoBehaviour
 
     GameObject eButtonDisplay;
 
+    //when you transition to a new level, your position is saved, to load back in the last checkpoint upon restarting
+    public static Vector3 lastCheckpointPosition;
+    //ignores the stopping condition (not being able to move for some time) upon entering a new level, used to avoid waiting after restarting
+    bool ignoreTransitionStop = false;
+    //keep track of the original cinemachine transition time, so when the level is restarted, we can set the transition value back to the original value
+    float cinemachineTransitionTime;
+
     // start is called before the first frame update
     void Start()
     {
@@ -67,6 +74,22 @@ public class Player : MonoBehaviour
 
         eButtonDisplay = transform.Find("Canvas/EButtonDisplay").gameObject;
         eButtonDisplay.SetActive(false);
+
+
+        //when the game is restarted (through restarting), try to respawn at the last checkpoint position
+        if (GlobalScript.restarting && lastCheckpointPosition != new Vector3(0f, 0f, 0f))
+        {
+            transform.position = lastCheckpointPosition;
+            GlobalScript.restarting = false;
+            ignoreTransitionStop = true;
+
+            //change the cinemachine transition time to be instant, then reset it back to default
+            var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+
+            //save the original transition time before setting it to 0
+            cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
+            cam.m_DefaultBlend.m_Time = 0f;
+        }
     }
 
     // update is called once per frame
@@ -116,30 +139,31 @@ public class Player : MonoBehaviour
                 }
             }
 
-            // set "isRunning" based on horizontal movement
-            animator.SetBool("isRunning", Mathf.Abs(horizontal) > 0.1f);
+            handleAnimationAndSound(horizontal);
+        }
+        else
+        {
+            rb.velocity /= 1.3f;
+        }
+    }
 
-            //play a walking sound if the player is walking
-            if (Mathf.Abs(rb.velocity.y) < 0.1f)
+    void handleAnimationAndSound(float horizontal)
+    {
+        // set "isRunning" based on horizontal movement
+        animator.SetBool("isRunning", Mathf.Abs(horizontal) > 0.1f);
+
+        //play a walking sound if the player is walking
+        if (Mathf.Abs(rb.velocity.y) < 0.1f)
+        {
+            if (Mathf.Abs(horizontal) > 0.1f)
             {
-                if (Mathf.Abs(horizontal) > 0.1f)
+                if (!walkingSound.isPlaying)
                 {
-                    if (!walkingSound.isPlaying)
-                    {
-                        walkingSound.Play();
-                    }
-                    if (walkingSound.volume < 1)
-                    {
-                        walkingSound.volume = Mathf.Min(1, walkingSound.volume + Time.deltaTime * 4);
-                    }
+                    walkingSound.Play();
                 }
-                else
+                if (walkingSound.volume < 1)
                 {
-                    //fade the walking sound out, instead of instantly stopping it, so it feels more natural
-                    if (walkingSound.volume > 0)
-                    {
-                        walkingSound.volume = Mathf.Max(0, walkingSound.volume - Time.deltaTime * 4);
-                    }
+                    walkingSound.volume = Mathf.Min(1, walkingSound.volume + Time.deltaTime * 4);
                 }
             }
             else
@@ -150,17 +174,20 @@ public class Player : MonoBehaviour
                     walkingSound.volume = Mathf.Max(0, walkingSound.volume - Time.deltaTime * 4);
                 }
             }
-
-
-            // set "isIdle" parameter if the player is not moving and not jumping
-            if (Mathf.Abs(horizontal) < 0.1f && coyoteCurrentTime <= 0)
-            {
-                animator.SetBool("isRunning", false);
-            }
         }
         else
         {
-            rb.velocity /= 1.3f;
+            //fade the walking sound out, instead of instantly stopping it, so it feels more natural
+            if (walkingSound.volume > 0)
+            {
+                walkingSound.volume = Mathf.Max(0, walkingSound.volume - Time.deltaTime * 4);
+            }
+        }
+
+        // set "isIdle" parameter if the player is not moving and not jumping
+        if (Mathf.Abs(horizontal) < 0.1f && coyoteCurrentTime <= 0)
+        {
+            animator.SetBool("isRunning", false);
         }
     }
 
@@ -222,7 +249,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(StopMovement(transitionStopTime));
             }
 
-
+            lastCheckpointPosition = transform.position;
         }
     }
 
@@ -260,10 +287,20 @@ public class Player : MonoBehaviour
     //stop player movement for some time
     IEnumerator StopMovement(float seconds)
     {
-        canMove = false;
-        rb.velocity = new Vector2(0f, 0f);
-        walkingSound.Stop();
-        yield return new WaitForSeconds(seconds);
-        canMove = true;
+        if (ignoreTransitionStop)
+        {
+            yield return null;
+            ignoreTransitionStop = false;
+            //put the transition time to the default value
+            Camera.main.GetComponent<Cinemachine.CinemachineBrain>().m_DefaultBlend.m_Time = cinemachineTransitionTime;
+        }
+        else
+        {
+            canMove = false;
+            rb.velocity = new Vector2(0f, 0f);
+            walkingSound.Stop();
+            yield return new WaitForSeconds(seconds);
+            canMove = true;
+        }
     }
 }

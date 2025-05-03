@@ -229,7 +229,7 @@ public class OrthogonalBlock : Block
     {
         Vector3 originalCamPosition = cam.transform.position;
 
-        //start from deltatime instead of 0, as the first frame shake seems pretty strong
+        //start from deltatime instead of 0, to not shake the screen for very short distances
         float timer = Time.deltaTime;
 
         while (timer < effectSeconds)
