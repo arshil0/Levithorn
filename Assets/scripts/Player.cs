@@ -30,8 +30,11 @@ public class Player : MonoBehaviour
     float coyoteCurrentTime = 0f;
     float coyoteTime = 0.2f;
 
-    // keeps track of how many controllable blocks are nearby
-    int nearbyBlocks = 0;
+    // keeps track of nearby blocks that can be manipulated
+    List<GameObject> nearbyBlocks = new List<GameObject>();
+
+    //I couldn't find a Size() function for the list class, so I keep an extra integer
+    int numberOfNearbyBlocks = 0;
     // if canMove is false, the player can't move, used for entering the object manipulation phase and transitioning stages.
     bool canMove = true;
 
@@ -133,7 +136,7 @@ public class Player : MonoBehaviour
             // the button to manipulate objects
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (nearbyBlocks > 0)
+                if (numberOfNearbyBlocks > 0)
                 {
                     StartCoroutine(manipulationPhase(0.25f));
                 }
@@ -231,7 +234,8 @@ public class Player : MonoBehaviour
         if (otherScript != null)
         {
             otherScript.nearPlayer = true;
-            nearbyBlocks += 1;
+            numberOfNearbyBlocks += 1;
+            nearbyBlocks.Add(other.gameObject);
             eButtonDisplay.SetActive(true);
         }
 
@@ -260,28 +264,73 @@ public class Player : MonoBehaviour
         if (otherScript != null)
         {
             otherScript.nearPlayer = false;
-            nearbyBlocks -= 1;
+            numberOfNearbyBlocks -= 1;
+            nearbyBlocks.Remove(other.gameObject);
 
-            if (nearbyBlocks <= 0)
+            if (numberOfNearbyBlocks <= 0)
             {
                 eButtonDisplay.SetActive(false);
             }
         }
     }
 
+
+    //while entering the manipulation phase, find the nearest object and enter that (if multiple are nearby)
+    GameObject findNearestBlock()
+    {
+        if (numberOfNearbyBlocks <= 0)
+        {
+            return null;
+        }
+        else if (numberOfNearbyBlocks == 1)
+        {
+            return nearbyBlocks[0];
+        }
+
+        GameObject nearestObject = nearbyBlocks[0];
+        float nearestBlockDistance = Vector2.Distance(nearestObject.transform.position, transform.position);
+
+        for (int i = 1; i < numberOfNearbyBlocks; i++)
+        {
+            GameObject obj = nearbyBlocks[i];
+
+            float distance = Vector2.Distance(obj.transform.position, transform.position);
+
+            if (distance < nearestBlockDistance)
+            {
+                nearestObject = obj;
+                nearestBlockDistance = distance;
+            }
+        }
+
+        return nearestObject;
+    }
+
     //this is when the player is about to manipulate some object(s)
     IEnumerator manipulationPhase(float seconds)
     {
-        canMove = false;
-        transform.localScale = initialScale;
-        animator.SetTrigger("DisappearTrigger");
-        eButtonDisplay.SetActive(false);
+        GameObject nearestBlock = findNearestBlock();
 
-        // wait for the animation to finish 
-        yield return new WaitForSeconds(0.5f);
+        if (nearestBlock == null)
+        {
+            yield return null;
+        }
+        else
+        {
+            canMove = false;
+            nearestBlock.GetComponent<Block>().manipulate();
+            transform.localScale = initialScale;
+            animator.SetTrigger("DisappearTrigger");
+            eButtonDisplay.SetActive(false);
 
-        // Now destroy the player 
-        GameObject.Destroy(gameObject);
+            // wait for the animation to finish 
+            yield return new WaitForSeconds(0.5f);
+
+            // Now destroy the player 
+            GameObject.Destroy(gameObject);
+        }
+
+
     }
 
     //stop player movement for some time

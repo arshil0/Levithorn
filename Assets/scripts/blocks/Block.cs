@@ -53,12 +53,6 @@ public class Block : MonoBehaviour
             qButtonDisplay.SetActive(false);
         }
 
-        // player is nearby and E is pressed, now the block is being controlled
-        if (Input.GetKeyDown(KeyCode.E) && nearPlayer)
-        {
-            manipulate();
-        }
-
 
     }
 
