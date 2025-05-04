@@ -25,6 +25,7 @@ public class MainMenu : MonoBehaviour
 
     public void continueGame()
     {
+        GlobalScript.restarting = true;
         SceneManager.LoadScene("Demo");
     }
 

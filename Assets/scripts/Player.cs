@@ -80,36 +80,42 @@ public class Player : MonoBehaviour
         eButtonDisplay = transform.Find("Canvas/EButtonDisplay").gameObject;
         eButtonDisplay.SetActive(false);
 
-        if (!shouldSpawn)
+        //if the game is restarting (or pressing continue), try to spawn at the last checkpoint
+        if (GlobalScript.restarting)
         {
-            Destroy(gameObject);
+            GlobalScript.restarting = false;
+            if (!shouldSpawn)
+            {
+                Destroy(gameObject);
+            }
+
+            print(lastCheckpointPosition);
+            //if there is no checkpoint saved, check to see if there is a save
+            if (lastCheckpointPosition == new Vector3(0f, 0f, 0f))
+            {
+                float x = PlayerPrefs.GetFloat("lastCheckpointPositionX");
+                float y = PlayerPrefs.GetFloat("lastCheckpointPositionY");
+                print(x);
+                print(y);
+
+                lastCheckpointPosition = new Vector3(x, y, 0f);
+            }
+
+            //if there is still nothing, start from 0
+            if (lastCheckpointPosition != new Vector3(0f, 0f, 0f))
+            {
+                transform.position = lastCheckpointPosition;
+                ignoreTransitionStop = true;
+
+                //change the cinemachine transition time to be instant, then reset it back to default
+                var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+
+                //save the original transition time before setting it to 0
+                cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
+                cam.m_DefaultBlend.m_Time = 0f;
+            }
         }
 
-        print(lastCheckpointPosition);
-        //if there is no checkpoint saved, check to see if there is a save
-        if (lastCheckpointPosition == new Vector3(0f, 0f, 0f))
-        {
-            float x = PlayerPrefs.GetFloat("lastCheckpointPositionX");
-            float y = PlayerPrefs.GetFloat("lastCheckpointPositionY");
-            print(x);
-            print(y);
-
-            lastCheckpointPosition = new Vector3(x, y, 0f);
-        }
-
-        //if there is still nothing, start from 0
-        if (lastCheckpointPosition != new Vector3(0f, 0f, 0f))
-        {
-            transform.position = lastCheckpointPosition;
-            ignoreTransitionStop = true;
-
-            //change the cinemachine transition time to be instant, then reset it back to default
-            var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
-
-            //save the original transition time before setting it to 0
-            cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
-            cam.m_DefaultBlend.m_Time = 0f;
-        }
     }
 
     // update is called once per frame

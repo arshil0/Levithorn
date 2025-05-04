@@ -10,6 +10,8 @@ public class GlobalScript : MonoBehaviour
 
     [SerializeField] GameObject pauseMenu;
 
+    public static bool restarting = false;
+
     void Start()
     {
         Time.timeScale = 1;
@@ -52,6 +54,7 @@ public class GlobalScript : MonoBehaviour
 
     public void restartLevel()
     {
+        restarting = true;
         SceneManager.LoadScene("Demo");
     }
 }
