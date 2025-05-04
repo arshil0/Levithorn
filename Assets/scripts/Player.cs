@@ -50,6 +50,9 @@ public class Player : MonoBehaviour
 
     //when you transition to a new level, your position is saved, to load back in the last checkpoint upon restarting
     public static Vector3 lastCheckpointPosition;
+    //if this variable is set to false, the player shouldn't spawn, that means that the last checkpoint was reached by a manipulated block (WIP)
+    public static bool shouldSpawn = true;
+
     //ignores the stopping condition (not being able to move for some time) upon entering a new level, used to avoid waiting after restarting
     bool ignoreTransitionStop = false;
     //keep track of the original cinemachine transition time, so when the level is restarted, we can set the transition value back to the original value
@@ -79,18 +82,25 @@ public class Player : MonoBehaviour
 
 
         //when the game is restarted (through restarting), try to respawn at the last checkpoint position
-        if (GlobalScript.restarting && lastCheckpointPosition != new Vector3(0f, 0f, 0f))
+        if (GlobalScript.restarting)
         {
-            transform.position = lastCheckpointPosition;
-            GlobalScript.restarting = false;
-            ignoreTransitionStop = true;
+            if (!shouldSpawn)
+            {
+                Destroy(gameObject);
+            }
+            if (lastCheckpointPosition != new Vector3(0f, 0f, 0f))
+            {
+                transform.position = lastCheckpointPosition;
+                GlobalScript.restarting = false;
+                ignoreTransitionStop = true;
 
-            //change the cinemachine transition time to be instant, then reset it back to default
-            var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+                //change the cinemachine transition time to be instant, then reset it back to default
+                var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
 
-            //save the original transition time before setting it to 0
-            cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
-            cam.m_DefaultBlend.m_Time = 0f;
+                //save the original transition time before setting it to 0
+                cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
+                cam.m_DefaultBlend.m_Time = 0f;
+            }
         }
     }
 
@@ -204,7 +214,7 @@ public class Player : MonoBehaviour
         if (coyoteCurrentTime > 0)
         {
             // if there is a jump command queued
-            if (jumpQueueCurrentTime > 0)
+            if (jumpQueueCurrentTime > 0 && Time.timeScale > 0)
             {
                 // reset the y velocity (so the jump doesn't get cancelled by a quickly falling player)
                 rb.velocity = new Vector2(rb.velocity.x, 0f);

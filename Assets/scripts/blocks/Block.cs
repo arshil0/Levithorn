@@ -95,5 +95,18 @@ public class Block : MonoBehaviour
         qButtonDisplay.SetActive(true);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "TransitionPoint")
+        {
+
+            //try to transition to the other level
+            other.gameObject.GetComponent<TransitionPoint>().WarpToLevel();
+
+            //update player checkpoint position
+            Player.lastCheckpointPosition = transform.position;
+        }
+    }
+
 
 }
