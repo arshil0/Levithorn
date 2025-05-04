@@ -1044,6 +1044,7 @@ MonoBehaviour:
   canMove: 1
   playerPrefab: {fileID: 8688263275941437897, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
   qButtonDisplay: {fileID: 0}
+  hitbox: {fileID: 6023123054315398331}
   direction: {x: 0, y: -1}
   directionLight: {fileID: 1276541521247097729}
   gravityChangeSound: {fileID: 5556779805564929008}

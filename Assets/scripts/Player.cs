@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
 
     float moveSpeed = 11f;
 
-    // this should be fixed later
     LayerMask groundLayer;
     Animator animator;
     public Rigidbody2D rb;

@@ -18,12 +18,12 @@ public class Block : MonoBehaviour
 
     [SerializeField] GameObject playerPrefab;
 
-    // track where the player should be when they leave the block
-    private Vector2 exitPosition;
-
     AudioSource manipulationSound;
 
     public GameObject qButtonDisplay;
+
+    LayerMask groundLayer;
+    [SerializeField] GameObject hitbox;
 
     // start is called before the first frame update
     public void Start()
@@ -33,6 +33,8 @@ public class Block : MonoBehaviour
         manipulationSound = transform.Find("manipulationSound").GetComponent<AudioSource>();
         qButtonDisplay = transform.Find("Canvas/QButtonDisplay").gameObject;
         qButtonDisplay.SetActive(false);
+
+        groundLayer = LayerMask.GetMask("Ground");
     }
 
     public void input()
@@ -40,8 +42,35 @@ public class Block : MonoBehaviour
         // if player is controlling this block and Q is pressed, leave
         if (Input.GetKeyDown(KeyCode.Q) && beingControlled && canMove)
         {
-            // store the position where the player should exit
-            exitPosition = transform.position + Vector3.up * 0.5f; // You can adjust the Y offset here based on your game design
+            // track where the player should be when they leave the block (default is above, then left, then right and finally down)
+            Vector2 exitPosition = transform.position + Vector3.up * 0.5f;
+
+            //probably an awful solution, but disable the hitbox while checking for nearby walls, to not collide with its own hitbox
+            hitbox.SetActive(false);
+
+            // throw a sphere cast and see if there is a wall above
+            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, transform.up, 0.25f, groundLayer))
+            {
+                print("ABOVE");
+                exitPosition = transform.position - Vector3.right * 0.5f;
+                // throw a sphere cast and see if there is a wall on the left (nested inside of the if, as I want to check only if above is blocked)
+                if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, -transform.right, 0.25f, groundLayer))
+                {
+                    print("LEFT");
+                    exitPosition = transform.position + Vector3.right * 0.5f;
+                    // throw a sphere cast and see if there is a wall on the right (again, nested, this is the 3rd check)
+                    if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, transform.right, 0.25f, groundLayer))
+                    {
+                        print("RIGHT");
+
+                        //otherwise below should be open (if not, how in the world did the player end up in this situation??)
+                        exitPosition = transform.position - Vector3.up * 0.5f;
+                    }
+                }
+
+            }
+
+            hitbox.SetActive(true);
 
             // instantiate the player at the exit position
             var player = Instantiate(playerPrefab, exitPosition, Quaternion.identity);
@@ -56,6 +85,7 @@ public class Block : MonoBehaviour
 
     }
 
+    //this is when the player is about to manipulate this object, it's called inside of the player script
     public void manipulate()
     {
         beingControlled = true;
