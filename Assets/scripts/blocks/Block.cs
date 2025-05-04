@@ -48,18 +48,18 @@ public class Block : MonoBehaviour
             //probably an awful solution, but disable the hitbox while checking for nearby walls, to not collide with its own hitbox
             hitbox.SetActive(false);
 
-            // throw a sphere cast and see if there is a wall above
-            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, transform.up, 0.25f, groundLayer))
+            // throw a sphere cast and see if there is a wall above (if the block is scaled up or down, take that into consideration as well, for all direction checks)
+            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.y - 1)), transform.up, 0.25f, groundLayer))
             {
                 print("ABOVE");
                 exitPosition = transform.position - Vector3.right * 0.5f;
                 // throw a sphere cast and see if there is a wall on the left (nested inside of the if, as I want to check only if above is blocked)
-                if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, -transform.right, 0.25f, groundLayer))
+                if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.x - 1)), -transform.right, 0.25f, groundLayer))
                 {
                     print("LEFT");
                     exitPosition = transform.position + Vector3.right * 0.5f;
                     // throw a sphere cast and see if there is a wall on the right (again, nested, this is the 3rd check)
-                    if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f, transform.right, 0.25f, groundLayer))
+                    if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.x - 1)), transform.right, 0.25f, groundLayer))
                     {
                         print("RIGHT");
 
