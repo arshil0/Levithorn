@@ -17,7 +17,13 @@ public class MainMenu : MonoBehaviour
         settingsPanel.SetActive(false);
     }
 
-    public void startGame()
+    public void startNewGame()
+    {
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene("Demo");
+    }
+
+    public void continueGame()
     {
         SceneManager.LoadScene("Demo");
     }

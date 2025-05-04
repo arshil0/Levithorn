@@ -80,27 +80,35 @@ public class Player : MonoBehaviour
         eButtonDisplay = transform.Find("Canvas/EButtonDisplay").gameObject;
         eButtonDisplay.SetActive(false);
 
-
-        //when the game is restarted (through restarting), try to respawn at the last checkpoint position
-        if (GlobalScript.restarting)
+        if (!shouldSpawn)
         {
-            if (!shouldSpawn)
-            {
-                Destroy(gameObject);
-            }
-            if (lastCheckpointPosition != new Vector3(0f, 0f, 0f))
-            {
-                transform.position = lastCheckpointPosition;
-                GlobalScript.restarting = false;
-                ignoreTransitionStop = true;
+            Destroy(gameObject);
+        }
 
-                //change the cinemachine transition time to be instant, then reset it back to default
-                var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+        print(lastCheckpointPosition);
+        //if there is no checkpoint saved, check to see if there is a save
+        if (lastCheckpointPosition == new Vector3(0f, 0f, 0f))
+        {
+            float x = PlayerPrefs.GetFloat("lastCheckpointPositionX");
+            float y = PlayerPrefs.GetFloat("lastCheckpointPositionY");
+            print(x);
+            print(y);
 
-                //save the original transition time before setting it to 0
-                cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
-                cam.m_DefaultBlend.m_Time = 0f;
-            }
+            lastCheckpointPosition = new Vector3(x, y, 0f);
+        }
+
+        //if there is still nothing, start from 0
+        if (lastCheckpointPosition != new Vector3(0f, 0f, 0f))
+        {
+            transform.position = lastCheckpointPosition;
+            ignoreTransitionStop = true;
+
+            //change the cinemachine transition time to be instant, then reset it back to default
+            var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+
+            //save the original transition time before setting it to 0
+            cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
+            cam.m_DefaultBlend.m_Time = 0f;
         }
     }
 
@@ -263,6 +271,8 @@ public class Player : MonoBehaviour
             }
 
             lastCheckpointPosition = transform.position;
+            PlayerPrefs.SetFloat("lastCheckpointPositionX", lastCheckpointPosition.x);
+            PlayerPrefs.SetFloat("lastCheckpointPositionY", lastCheckpointPosition.y);
         }
     }
 

@@ -10,8 +10,10 @@ public class GlobalScript : MonoBehaviour
 
     [SerializeField] GameObject pauseMenu;
 
-    //when things are loading in (specially the player), we want to make sure that it knows the game is restarting, to handle the restart logic
-    public static bool restarting = false;
+    void Start()
+    {
+        Time.timeScale = 1;
+    }
 
     // Update is called once per frame
     void Update()
@@ -51,6 +53,5 @@ public class GlobalScript : MonoBehaviour
     public void restartLevel()
     {
         SceneManager.LoadScene("Demo");
-        restarting = true;
     }
 }
