@@ -56,16 +56,20 @@ public class Block : MonoBehaviour
         // player is nearby and E is pressed, now the block is being controlled
         if (Input.GetKeyDown(KeyCode.E) && nearPlayer)
         {
-            beingControlled = true;
-
-            manipulationSound.pitch = Random.Range(0.9f, 1.55f);
-            manipulationSound.Play();
-            qButtonDisplay.SetActive(true);
+            manipulate();
         }
 
 
     }
 
+    public void manipulate()
+    {
+        beingControlled = true;
+
+        manipulationSound.pitch = Random.Range(0.9f, 1.55f);
+        manipulationSound.Play();
+        qButtonDisplay.SetActive(true);
+    }
 
 
 }
