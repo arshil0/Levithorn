@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     bool canMove = true;
 
     //how long the player stops when transitioning between stages, it's a bit less than the actual transition time so it feels better for the player
-    float transitionStopTime = 1f;
+    float transitionStopTime = 0.5f;
 
     // store the initial scale of the player (I scaled up the player and its size gets changed on play mode)
     private Vector3 initialScale;
