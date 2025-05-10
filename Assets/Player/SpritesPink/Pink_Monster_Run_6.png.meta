@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c6817fa92dac07d47b2769fdcac1f34e
+guid: 2c456cfff7b047547bc64a5ce42b03ef
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,12 +93,54 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dude_Monster_Attack2_6_0
+      name: Pink_Monster_Run_6_0
       rect:
         serializedVersion: 2
         x: 7
+        y: 1
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e95bca4fa4024d445b26422a54623f3d
+      internalID: -517215856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pink_Monster_Run_6_1
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 1
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b4eab12d60431d4498aa09a5c1a2670
+      internalID: 213796233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pink_Monster_Run_6_2
+      rect:
+        serializedVersion: 2
+        x: 71
         y: 0
-        width: 17
+        width: 19
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -107,62 +149,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39c0e6c1bd886254080c53dce10214cf
-      internalID: 606652050
+      spriteID: 14a9a95b7c8cd924caec77e50e145791
+      internalID: -1279227978
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dude_Monster_Attack2_6_1
-      rect:
-        serializedVersion: 2
-        x: 38
-        y: 0
-        width: 17
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d7d00f9af7cf3cb49bd931748c7108f1
-      internalID: -1168904029
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dude_Monster_Attack2_6_2
-      rect:
-        serializedVersion: 2
-        x: 70
-        y: 0
-        width: 26
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 57c38d7522eb4ee4b97681a6f4026988
-      internalID: -1943574413
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dude_Monster_Attack2_6_3
+      name: Pink_Monster_Run_6_3
       rect:
         serializedVersion: 2
         x: 103
-        y: 0
+        y: 1
         width: 19
-        height: 27
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,19 +170,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e26b3e249d59a294d96f873874b7f545
-      internalID: 549636993
+      spriteID: 37bba584d039eef4d99723a9e95bcaae
+      internalID: -421357859
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dude_Monster_Attack2_6_4
+      name: Pink_Monster_Run_6_4
       rect:
         serializedVersion: 2
         x: 136
-        y: 0
-        width: 22
+        y: 1
+        width: 18
         height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -191,20 +191,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5d1f74f4bc01194aa9ed07a79a00eaf
-      internalID: 452334077
+      spriteID: 473c89b4a09f7954ca387542cff6ed3e
+      internalID: -2000015218
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dude_Monster_Attack2_6_5
+      name: Pink_Monster_Run_6_5
       rect:
         serializedVersion: 2
-        x: 166
+        x: 168
         y: 0
-        width: 17
-        height: 24
+        width: 18
+        height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -212,8 +212,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71db4a51673964c42a715f9504672ace
-      internalID: 1399425439
+      spriteID: cfba3abf56d6fe048bbcd07485fa9b64
+      internalID: -623734255
       vertices: []
       indices: 
       edges: []
@@ -229,12 +229,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dude_Monster_Attack2_6_0: 606652050
-      Dude_Monster_Attack2_6_1: -1168904029
-      Dude_Monster_Attack2_6_2: -1943574413
-      Dude_Monster_Attack2_6_3: 549636993
-      Dude_Monster_Attack2_6_4: 452334077
-      Dude_Monster_Attack2_6_5: 1399425439
+      Pink_Monster_Run_6_0: -517215856
+      Pink_Monster_Run_6_1: 213796233
+      Pink_Monster_Run_6_2: -1279227978
+      Pink_Monster_Run_6_3: -421357859
+      Pink_Monster_Run_6_4: -2000015218
+      Pink_Monster_Run_6_5: -623734255
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

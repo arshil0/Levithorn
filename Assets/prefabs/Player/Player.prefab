@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 2346357146971635408}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -696,6 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8df0a412e92134793ef036af5d960a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newSkinAnimator: {fileID: 22100000, guid: e1275345e167bc54fae5849b3801c23d, type: 2}
   rb: {fileID: 0}
 --- !u!95 &8688263275941437890
 Animator:

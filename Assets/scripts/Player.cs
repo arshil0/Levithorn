@@ -7,6 +7,11 @@ public class Player : MonoBehaviour
 {
     // DON'T USE [SERIALIZEFIELD], THE PLAYER GETS DELETED AND REINITIALIZED!
 
+    public AnimatorOverrideController newSkinAnimator;
+    private static int collectedItems = 0;
+   
+
+
     float moveSpeed = 11f;
 
     LayerMask groundLayer;
@@ -61,6 +66,7 @@ public class Player : MonoBehaviour
     // start is called before the first frame update
     void Start()
     {
+        CollectibleManager.instance.SetPlayer(this);
         //setup the ground layer (This was how the Unity api used it)
         groundLayer = LayerMask.GetMask("Ground");
 
@@ -124,6 +130,9 @@ public class Player : MonoBehaviour
         input();
         timers();
     }
+
+    
+
 
     void input()
     {
@@ -262,9 +271,15 @@ public class Player : MonoBehaviour
             eButtonDisplay.SetActive(true);
         }
 
-        if (other.gameObject.tag == "Coin")
+        if (other.gameObject.tag == "Collectible")
         {
             GameObject.Destroy(other.gameObject);
+            CollectibleManager.instance.CollectItem();
+        }
+
+        void ChangeSkin()
+        {
+            animator.runtimeAnimatorController = newSkinAnimator;
         }
 
         if (other.gameObject.tag == "TransitionPoint")
