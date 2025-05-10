@@ -6,10 +6,14 @@ using TMPro;
 public class Player : MonoBehaviour
 {
     // DON'T USE [SERIALIZEFIELD], THE PLAYER GETS DELETED AND REINITIALIZED!
-
+    public AnimatorOverrideController defaultAnimator;
+    public static bool newSkinUnlocked = false;
+    private static bool useNewSkin = false;
     public AnimatorOverrideController newSkinAnimator;
     private static int collectedItems = 0;
     public static bool skinChanged = false;
+    public GameObject skinUnlockText;
+
 
 
 
@@ -77,9 +81,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
        
         animator = GetComponent<Animator>();
-        if (skinChanged)
+        if (newSkinUnlocked)
         {
-            animator.runtimeAnimatorController = newSkinAnimator;
+            animator.runtimeAnimatorController = useNewSkin ? newSkinAnimator : defaultAnimator;
         }
 
         // store the initial scale of the player
@@ -187,6 +191,12 @@ public class Player : MonoBehaviour
         {
             rb.velocity /= 1.3f;
         }
+
+        if (newSkinUnlocked && Input.GetKeyDown(KeyCode.K))
+        {
+            useNewSkin = !useNewSkin;
+            animator.runtimeAnimatorController = useNewSkin ? newSkinAnimator : defaultAnimator;
+        }
     }
 
     void handleAnimationAndSound(float horizontal)
@@ -284,9 +294,21 @@ public class Player : MonoBehaviour
             collectedItems++;
             CollectibleManager.instance.CollectItem();
 
-            if (collectedItems >= 5 && !skinChanged)
+            if (collectedItems >= 5 && !newSkinUnlocked)
             {
-                ChangeSkin();
+                newSkinUnlocked = true;
+                useNewSkin = true;
+                animator.runtimeAnimatorController = newSkinAnimator;
+
+                // unlock text at player's position
+                if (skinUnlockText != null)
+                {
+                    GameObject textObj = Instantiate(skinUnlockText, GameObject.Find("Canvas").transform); // make sure it's under the canvas
+                    Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
+                    textObj.transform.position = screenPos;
+                    Destroy(textObj, 2.5f);
+
+                }
             }
         }
 

@@ -8849,13 +8849,25 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8688263275941437889, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
+      propertyPath: skinUnlockText
+      value: 
+      objectReference: {fileID: 8803997719420530748, guid: d966213ba06e14c4cb0e6d86d52810fa, type: 3}
+    - target: {fileID: 8688263275941437889, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
       propertyPath: collectibleText
       value: 
       objectReference: {fileID: 315481318}
     - target: {fileID: 8688263275941437889, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
+      propertyPath: defaultAnimator
+      value: 
+      objectReference: {fileID: 22100000, guid: cfce16854bfd0524095913bb7104a844, type: 2}
+    - target: {fileID: 8688263275941437889, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
       propertyPath: newSkinAnimator
       value: 
       objectReference: {fileID: 22100000, guid: e1275345e167bc54fae5849b3801c23d, type: 2}
+    - target: {fileID: 8688263275941437890, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: cfce16854bfd0524095913bb7104a844, type: 2}
     - target: {fileID: 8688263275941437892, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -10032,7 +10044,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 647913457}
-  - component: {fileID: 647913456}
   - component: {fileID: 647913458}
   m_Layer: 0
   m_Name: CollectibleManager
@@ -10041,19 +10052,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &647913456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647913455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2463dfec00f0f6c41aaea2c2eefdb984, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectibleText: {fileID: 315481318}
 --- !u!4 &647913457
 Transform:
   m_ObjectHideFlags: 0

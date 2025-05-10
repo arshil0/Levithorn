@@ -696,7 +696,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8df0a412e92134793ef036af5d960a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultAnimator: {fileID: 22100000, guid: cfce16854bfd0524095913bb7104a844, type: 2}
   newSkinAnimator: {fileID: 22100000, guid: e1275345e167bc54fae5849b3801c23d, type: 2}
+  skinUnlockText: {fileID: 8803997719420530748, guid: d966213ba06e14c4cb0e6d86d52810fa, type: 3}
   rb: {fileID: 0}
 --- !u!95 &8688263275941437890
 Animator:
