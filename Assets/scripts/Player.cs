@@ -9,7 +9,9 @@ public class Player : MonoBehaviour
 
     public AnimatorOverrideController newSkinAnimator;
     private static int collectedItems = 0;
-   
+    public static bool skinChanged = false;
+
+
 
 
     float moveSpeed = 11f;
@@ -73,7 +75,12 @@ public class Player : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
 
         rb = GetComponent<Rigidbody2D>();
+       
         animator = GetComponent<Animator>();
+        if (skinChanged)
+        {
+            animator.runtimeAnimatorController = newSkinAnimator;
+        }
 
         // store the initial scale of the player
         initialScale = transform.localScale;
@@ -273,13 +280,14 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Collectible")
         {
-            GameObject.Destroy(other.gameObject);
+            Destroy(other.gameObject);
+            collectedItems++;
             CollectibleManager.instance.CollectItem();
-        }
 
-        void ChangeSkin()
-        {
-            animator.runtimeAnimatorController = newSkinAnimator;
+            if (collectedItems >= 5 && !skinChanged)
+            {
+                ChangeSkin();
+            }
         }
 
         if (other.gameObject.tag == "TransitionPoint")
@@ -295,6 +303,12 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetFloat("lastCheckpointPositionX", lastCheckpointPosition.x);
             PlayerPrefs.SetFloat("lastCheckpointPositionY", lastCheckpointPosition.y);
         }
+    }
+
+    void ChangeSkin()
+    {
+        animator.runtimeAnimatorController = newSkinAnimator;
+        skinChanged = true;
     }
 
     private void OnTriggerExit2D(Collider2D other)
