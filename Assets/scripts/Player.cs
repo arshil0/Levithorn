@@ -66,8 +66,6 @@ public class Player : MonoBehaviour
 
     //ignores the stopping condition (not being able to move for some time) upon entering a new level, used to avoid waiting after restarting
     bool ignoreTransitionStop = false;
-    //keep track of the original cinemachine transition time, so when the level is restarted, we can set the transition value back to the original value
-    float cinemachineTransitionTime;
 
     // start is called before the first frame update
     void Start()
@@ -79,7 +77,7 @@ public class Player : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
 
         rb = GetComponent<Rigidbody2D>();
-       
+
         animator = GetComponent<Animator>();
         if (newSkinUnlocked)
         {
@@ -106,14 +104,11 @@ public class Player : MonoBehaviour
                 Destroy(gameObject);
             }
 
-            print(lastCheckpointPosition);
             //if there is no checkpoint saved, check to see if there is a save
             if (lastCheckpointPosition == new Vector3(0f, 0f, 0f))
             {
                 float x = PlayerPrefs.GetFloat("lastCheckpointPositionX");
                 float y = PlayerPrefs.GetFloat("lastCheckpointPositionY");
-                print(x);
-                print(y);
 
                 lastCheckpointPosition = new Vector3(x, y, 0f);
             }
@@ -122,14 +117,6 @@ public class Player : MonoBehaviour
             if (lastCheckpointPosition != new Vector3(0f, 0f, 0f))
             {
                 transform.position = lastCheckpointPosition;
-                ignoreTransitionStop = true;
-
-                //change the cinemachine transition time to be instant, then reset it back to default
-                var cam = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
-
-                //save the original transition time before setting it to 0
-                cinemachineTransitionTime = cam.m_DefaultBlend.m_Time;
-                cam.m_DefaultBlend.m_Time = 0f;
             }
         }
 
@@ -142,7 +129,7 @@ public class Player : MonoBehaviour
         timers();
     }
 
-    
+
 
 
     void input()
@@ -181,7 +168,7 @@ public class Player : MonoBehaviour
             {
                 if (numberOfNearbyBlocks > 0)
                 {
-                    StartCoroutine(manipulationPhase(0.25f));
+                    StartCoroutine(manipulationPhase(0.5f));
                 }
             }
 
@@ -400,7 +387,7 @@ public class Player : MonoBehaviour
             eButtonDisplay.SetActive(false);
 
             // wait for the animation to finish 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(seconds);
 
             // Now destroy the player 
             GameObject.Destroy(gameObject);
@@ -416,8 +403,6 @@ public class Player : MonoBehaviour
         {
             yield return null;
             ignoreTransitionStop = false;
-            //put the transition time to the default value
-            Camera.main.GetComponent<Cinemachine.CinemachineBrain>().m_DefaultBlend.m_Time = cinemachineTransitionTime;
         }
         else
         {

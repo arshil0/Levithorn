@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour
     public void startNewGame()
     {
         PlayerPrefs.DeleteAll();
+        Player.lastCheckpointPosition = new Vector3(0f, 0f, 0f);
         TransitionPoint.mainCameraFocusLevel = 1;
         SceneManager.LoadScene("Demo");
     }

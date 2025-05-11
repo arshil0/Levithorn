@@ -9,11 +9,15 @@ public class GlobalScript : MonoBehaviour
     //it's attatched to the main camera, as it's unique and will always exist
 
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject levelsContentPrefab;
 
+    public static GameObject levelsContentObject;
     public static bool restarting = false;
 
     void Start()
     {
+        levelsContentObject = GameObject.Find("Levels");
         Time.timeScale = 1;
     }
 
@@ -55,6 +59,38 @@ public class GlobalScript : MonoBehaviour
     public void restartLevel()
     {
         restarting = true;
-        SceneManager.LoadScene("Demo");
+
+        /*
+        //understand which level the player is in, that is done by getting the current active camera and getting its name
+        string currentLevel = GetComponent<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.Name;
+
+        GameObject levelContent = GameObject.Find("Levels/" + currentLevel);
+
+        if (levelContent != null)
+        {
+            print(levelContent);
+        }
+        */
+
+        //there should be only 1 player object at a time, but just in case.
+        //find all player objects and delete them
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            Destroy(player);
+        }
+
+        //re-instantiate the player (the player will get placed in the right position)
+        Instantiate(playerPrefab);
+
+        //destroy the levels object (which holds the initial objects positions)
+        Destroy(levelsContentObject);
+
+        //re-instantiate the level content
+        levelsContentObject = Instantiate(levelsContentPrefab);
+
+
+
+        //SceneManager.LoadScene("Demo");
     }
 }
