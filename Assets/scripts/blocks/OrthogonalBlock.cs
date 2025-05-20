@@ -19,7 +19,10 @@ public class OrthogonalBlock : Block
     SpriteRenderer sprite;
 
     [SerializeField] GameObject directionLight;
+    [SerializeField] GameObject exitLight;
+
     SpriteRenderer directionLightSprite;
+
 
     [SerializeField] AudioSource gravityChangeSound;
     [SerializeField] AudioSource impactSound;
@@ -42,7 +45,11 @@ public class OrthogonalBlock : Block
 
         //call the parent input function (E to enter and Q to leave), ONLY IF the block is not moving
         if (!moving)
-            input();
+            //if the player left the block, hide the player light.
+            if (input() == "left")
+            {
+                exitLight.SetActive(false);
+            }
 
         //player is currently controlling this block
         if (beingControlled && canMove)
@@ -77,6 +84,7 @@ public class OrthogonalBlock : Block
             if (moved)
             {
                 setLightDirection(direction);
+                exitLight.SetActive(false);
                 moving = true;
 
                 gravityChangeSound.pitch = Random.Range(0.4f, 1.2f);
@@ -125,9 +133,17 @@ public class OrthogonalBlock : Block
                 if (velocity > maxSpeed / 5f)
                 {
                     if (beingControlled)
+                    {
                         directionLightSprite.color = new Color(0.04f, 0.9f, 1);
+                        exitLight.SetActive(true);
+                    }
+
                     else
+                    {
                         directionLightSprite.color = Color.white;
+                        exitLight.SetActive(false);
+                    }
+
 
                     //this is when the ground was hit (so it's called once)
                     if (moving)
@@ -152,6 +168,8 @@ public class OrthogonalBlock : Block
 
                         //start a screen shake
                         StartCoroutine(screenShake(cam, impactStrength / 6));
+
+                        setupExitLight();
                     }
                 }
 
@@ -222,6 +240,57 @@ public class OrthogonalBlock : Block
                 270
             );
         }
+    }
+
+    //rotates the player blue light displaying the exit direction, and the Q button display
+    public void setupExitLight()
+    {
+        //display the player light, in the direction that they will come out after pressing Q
+        exitLight.SetActive(true);
+        //disable the hitbox while checking for walls (again, probably a bad solution)
+        base.hitbox.SetActive(false);
+        //shameless copy paste from the parent "input()" function
+        // throw a sphere cast and see if there is a wall above (if the block is scaled up or down, take that into consideration as well, for all direction checks)
+        exitLight.transform.eulerAngles = new Vector3(
+            0,
+            0,
+            0
+        );
+        base.qButtonDisplay.transform.position = new Vector3(0f, 0.4f, 0f) * transform.localScale.y + transform.position;
+        if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.y - 1)), transform.up, 0.25f, groundLayer))
+        {
+            //the light and Q display will be on the left
+            exitLight.transform.eulerAngles = new Vector3(
+                0,
+                0,
+                90
+            );
+            base.qButtonDisplay.transform.position = new Vector3(-1.075f, -0.675f, 0f) * transform.localScale.x + transform.position;
+            // throw a sphere cast and see if there is a wall on the left (nested inside of the if, as I want to check only if above is blocked)
+            if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.x - 1)), -transform.right, 0.25f, groundLayer))
+            {
+                //the light will be on the right
+                exitLight.transform.eulerAngles = new Vector3(
+                    0,
+                    0,
+                    270
+                );
+                base.qButtonDisplay.transform.position = new Vector3(1.075f, -0.675f, 0f) * transform.localScale.x + transform.position;
+                // throw a sphere cast and see if there is a wall on the right (again, nested, this is the 3rd check)
+                if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.x - 1)), transform.right, 0.25f, groundLayer))
+                {
+                    //otherwise the light will glow from below
+                    exitLight.transform.eulerAngles = new Vector3(
+                        0,
+                        0,
+                        180
+                    );
+                    base.qButtonDisplay.transform.position = new Vector3(0f, -1.75f, 0f) * transform.localScale.y + transform.position;
+                }
+            }
+
+        }
+        base.hitbox.SetActive(true);
     }
 
     //honestly found this from a youtube video, not exactly sure why a regular function didn't work but an IEnumerator works

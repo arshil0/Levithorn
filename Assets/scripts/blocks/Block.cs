@@ -22,8 +22,8 @@ public class Block : MonoBehaviour
 
     public GameObject qButtonDisplay;
 
-    LayerMask groundLayer;
-    [SerializeField] GameObject hitbox;
+    public LayerMask groundLayer;
+    [SerializeField] public GameObject hitbox;
 
     // start is called before the first frame update
     public void Start()
@@ -37,7 +37,7 @@ public class Block : MonoBehaviour
         groundLayer = LayerMask.GetMask("Ground");
     }
 
-    public void input()
+    public string input()
     {
         // if player is controlling this block and Q is pressed, leave
         if (Input.GetKeyDown(KeyCode.Q) && beingControlled && canMove)
@@ -51,17 +51,14 @@ public class Block : MonoBehaviour
             // throw a sphere cast and see if there is a wall above (if the block is scaled up or down, take that into consideration as well, for all direction checks)
             if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.y - 1)), transform.up, 0.25f, groundLayer))
             {
-                print("ABOVE");
                 exitPosition = transform.position - Vector3.right * 0.5f;
                 // throw a sphere cast and see if there is a wall on the left (nested inside of the if, as I want to check only if above is blocked)
                 if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.x - 1)), -transform.right, 0.25f, groundLayer))
                 {
-                    print("LEFT");
                     exitPosition = transform.position + Vector3.right * 0.5f;
                     // throw a sphere cast and see if there is a wall on the right (again, nested, this is the 3rd check)
                     if (Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), 0.45f + (0.5f * (transform.localScale.x - 1)), transform.right, 0.25f, groundLayer))
                     {
-                        print("RIGHT");
 
                         //otherwise below should be open (if not, how in the world did the player end up in this situation??)
                         exitPosition = transform.position - Vector3.up * 0.5f;
@@ -80,7 +77,10 @@ public class Block : MonoBehaviour
 
             beingControlled = false;
             qButtonDisplay.SetActive(false);
+            return "left";
         }
+
+        return "";
 
 
     }
