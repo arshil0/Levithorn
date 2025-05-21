@@ -5,6 +5,7 @@ using TMPro;
 public class CollectibleManager : MonoBehaviour
 {
     public static CollectibleManager instance;
+    public static bool[] collectedOrangesIds;
 
     public int collectedItems = 0;
     public TextMeshProUGUI collectibleText;
@@ -21,13 +22,9 @@ public class CollectibleManager : MonoBehaviour
             return;
         }
         instance = this;
+        collectedOrangesIds = new bool[GameObject.Find("Oranges").transform.childCount];
 
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void Update()
-    {
-        print(collectibleText);
     }
 
     public void SetPlayer(Player player)
@@ -37,10 +34,24 @@ public class CollectibleManager : MonoBehaviour
         UpdateCollectibleUI();
     }
 
-    public void CollectItem()
+    public void UpdateExistingOranges()
+    {
+        print("about to delete");
+        GameObject oranges = GameObject.Find("Oranges");
+        for (int i = 0; i < collectedOrangesIds.Length; i++)
+        {
+            if (collectedOrangesIds[i] == true)
+            {
+                Destroy(oranges.transform.Find(i.ToString()).gameObject);
+            }
+        }
+    }
+
+    public void CollectItem(string id)
     {
         collectedItems++;
         UpdateCollectibleUI();
+        collectedOrangesIds[int.Parse(id)] = true;
 
         if (collectedItems == 5)
         {

@@ -19,6 +19,7 @@ public class GlobalScript : MonoBehaviour
     {
         levelsContentObject = GameObject.Find("Levels");
         Time.timeScale = 1;
+        CollectibleManager.instance.UpdateExistingOranges();
     }
 
     // Update is called once per frame

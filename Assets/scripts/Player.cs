@@ -40,6 +40,11 @@ public class Player : MonoBehaviour
     float coyoteCurrentTime = 0f;
     float coyoteTime = 0.2f;
 
+    // there is a jump cooldown so the player doesn't instantly jump multiple times
+    float jumpCooldownCurrentTime = 0f;
+    float jumpCooldown = 0.21f;
+
+
     // keeps track of nearby blocks that can be manipulated
     List<GameObject> nearbyBlocks = new List<GameObject>();
 
@@ -158,7 +163,7 @@ public class Player : MonoBehaviour
             }
 
             // if the player presses "jump"
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            if (jumpCooldownCurrentTime <= 0f && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
             {
                 jumpQueueCurrentTime = jumpQueueTime;
             }
@@ -249,6 +254,7 @@ public class Player : MonoBehaviour
                 rb.AddForce(new Vector2(0f, jumpForce));
                 jumpQueueCurrentTime = 0f;
                 coyoteCurrentTime = 0f;
+                jumpCooldownCurrentTime = jumpCooldown;
 
                 //randomize jump sound properties and then play it
                 jumpSound.pitch = Random.Range(0.92f, 1.4f);
@@ -260,6 +266,11 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("isJumping");
             }
             coyoteCurrentTime = Mathf.Max(0, coyoteCurrentTime - Time.deltaTime);
+        }
+
+        if (jumpCooldownCurrentTime > 0)
+        {
+            jumpCooldownCurrentTime = Mathf.Max(0, jumpCooldownCurrentTime - Time.deltaTime);
         }
     }
 
@@ -277,9 +288,10 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Collectible")
         {
+            string objName = other.gameObject.name;
             Destroy(other.gameObject);
             collectedItems++;
-            CollectibleManager.instance.CollectItem();
+            CollectibleManager.instance.CollectItem(objName);
 
             if (collectedItems >= 5 && !newSkinUnlocked)
             {

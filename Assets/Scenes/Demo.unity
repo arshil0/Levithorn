@@ -6413,7 +6413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (4)
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -8725,11 +8725,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8688263275941437892, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.72
+      value: -6.54
       objectReference: {fileID: 0}
     - target: {fileID: 8688263275941437892, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.8
+      value: -1.22
       objectReference: {fileID: 0}
     - target: {fileID: 8688263275941437892, guid: eb264b0d5dac02d42b747b3f16eba0d8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9493,7 +9493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (2)
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -9728,7 +9728,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (1)
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -10699,7 +10699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (6)
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -14123,7 +14123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (3)
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -15818,7 +15818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (5)
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -50572,7 +50572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange (7)
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
@@ -50959,7 +50959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1091224620857492783, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
       propertyPath: m_Name
-      value: Orange
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d44c1e593ee3b4d8baa988c569bbd2, type: 3}
