@@ -89,6 +89,7 @@ public class Block : MonoBehaviour
     public void manipulate()
     {
         beingControlled = true;
+        canMove = true;
 
         manipulationSound.pitch = Random.Range(0.9f, 1.55f);
         manipulationSound.Play();

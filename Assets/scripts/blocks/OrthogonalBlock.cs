@@ -42,7 +42,6 @@ public class OrthogonalBlock : Block
     // Update is called once per frame
     void Update()
     {
-
         //call the parent input function (E to enter and Q to leave), ONLY IF the block is not moving
         if (!moving)
             //if the player left the block, hide the player light.
@@ -136,6 +135,7 @@ public class OrthogonalBlock : Block
                     {
                         directionLightSprite.color = new Color(0.04f, 0.9f, 1);
                         exitLight.SetActive(true);
+                        canMove = true;
                     }
 
                     else
@@ -159,7 +159,7 @@ public class OrthogonalBlock : Block
                         base.qButtonDisplay.SetActive(true);
 
 
-                        //A pretty long line of code but here we go:
+                        //gets the current active camera, a pretty long line of code but here we go:
                         //first we get the main camera
                         //then we get the "Cinemachine brain"
                         //from that we get the active virtual camera
@@ -179,6 +179,7 @@ public class OrthogonalBlock : Block
             else
             {
                 canMove = false;
+                base.qButtonDisplay.SetActive(false);
             }
         }
     }

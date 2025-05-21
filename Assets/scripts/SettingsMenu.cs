@@ -59,7 +59,7 @@ public class SettingsMenu : MonoBehaviour
         float vol = -99999;
         if (soundVolumeValue > 0)
         {
-            vol = Mathf.Log10(soundVolumeValue) * 20; // for dB scaling
+            vol = Mathf.Log10(soundVolumeValue) * 20 + 5f; // for dB scaling
         }
         soundMixer.SetFloat("Volume", vol);
         PlayerPrefs.SetFloat("SoundVolume", soundVolumeValue);

@@ -22,12 +22,19 @@ public class CollectibleManager : MonoBehaviour
         }
         instance = this;
 
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        print(collectibleText);
     }
 
     public void SetPlayer(Player player)
     {
         currentPlayer = player;
+        collectibleText = GameObject.Find("Canvas/Orange/Count").GetComponent<TextMeshProUGUI>();
+        UpdateCollectibleUI();
     }
 
     public void CollectItem()
