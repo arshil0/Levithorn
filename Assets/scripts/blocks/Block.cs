@@ -29,6 +29,7 @@ public class Block : MonoBehaviour
     public void Start()
     {
         beingControlled = false;
+        rb = GetComponent<Rigidbody2D>();
 
         manipulationSound = transform.Find("manipulationSound").GetComponent<AudioSource>();
         qButtonDisplay = transform.Find("Canvas/QButtonDisplay").gameObject;

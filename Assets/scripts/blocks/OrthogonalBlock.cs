@@ -32,7 +32,6 @@ public class OrthogonalBlock : Block
     void Start()
     {
         base.Start();
-        rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         directionLightSprite = directionLight.GetComponent<SpriteRenderer>();
 
