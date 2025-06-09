@@ -54,6 +54,7 @@ public class GlobalScript : MonoBehaviour
 
     public void leaveGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
 
