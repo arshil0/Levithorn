@@ -7,9 +7,9 @@ public class ChainedBlock : Block
 {
 
     //speed of the block moving
-    float speed = 200f;
+    float speed = 250f;
     //manipulation power of the player while trying to move this block
-    float manipulationSpeed = 175000f;
+    float manipulationSpeed = 650f;
     //list of blocks this block is attatched to (defined through the level editor from Unity)
     [SerializeField] Block[] blocksChainedTo;
     [SerializeField] LineRenderer connectionLines;
@@ -60,7 +60,7 @@ public class ChainedBlock : Block
             playerForce.Normalize();
             playerForce *= manipulationSpeed;
 
-            rb.AddForce(playerForce * Time.deltaTime);
+            rb.AddForce(playerForce * Time.deltaTime * rb.mass);
             setupExitLight();
         }
 
