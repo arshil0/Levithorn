@@ -130,6 +130,7 @@ public class Player : MonoBehaviour
     // update is called once per frame
     void Update()
     {
+        //Application.targetFrameRate = 20;
         input();
         timers();
     }
